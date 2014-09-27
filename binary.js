@@ -1,7 +1,7 @@
 /*!
  * Binary Reader
  * author: Stefan Benicke <stefan.benicke@gmail.com>
- * version: 1.0
+ * version: 1.1
  * license: MIT
  */
 
@@ -14,12 +14,12 @@
 			this.dataView = new DataView(new ArrayBuffer(array));
 		} else if (ArrayBuffer.isView(array)) {
 			this.dataView = new DataView(array.buffer, array.byteOffset, array.byteLength);
-		} else if (instanceOf(array, 'ArrayBuffer')) {
+		} else if (_instanceOf(array, 'ArrayBuffer')) {
 			this.dataView = new DataView(array);
 		} else if ( typeof array === 'number') {
 			this.dataView = new DataView(new ArrayBuffer(array));
 		} else {
-			throw new Error('Error! Invalid argument: array.');
+			throw new Error('Error! Invalid argument');
 		}
 		this.length = this.dataView.byteLength;
 		this.littleEndian = littleEndian || false;
@@ -37,15 +37,15 @@
 		return this;
 	};
 	Binary.prototype.getBlob = function(type) {
-		type = type || 'application/octet-binary';
+		if (type === undefined || typeof type !== 'string') {
+			type = 'application/octet-binary';
+		}
 		return new Blob([this.dataView.buffer], {
 			type : type
 		});
 	};
 	Binary.prototype.getChunk = function(from, to) {
-		// get buffer chunk
 		if (to === undefined) {
-			// from => length
 			var length = from;
 			from = this.position;
 			to = from + length;
@@ -230,16 +230,15 @@
 		return this.getString(1, encoding);
 	};
 	Binary.prototype.setBytes = function(array) {
-		// array can be Array, TypedArray or ArrayBuffer
 		var view = null;
 		if (Array.isArray(array)) {
 			view = new Uint8Array(array);
 		} else if (array && ArrayBuffer.isView(array)) {
 			view = new Uint8Array(array.buffer, array.byteOffset, array.byteLength);
-		} else if (instanceOf(array, 'ArrayBuffer')) {
+		} else if (_instanceOf(array, 'ArrayBuffer')) {
 			view = new Uint8Array(array);
 		} else {
-			throw new Error('Error! Invalid argument: array.');
+			throw new Error('Error! Invalid argument');
 		}
 		var offset = this.position;
 		this.seek(offset + view.length);
@@ -271,8 +270,10 @@
 	Binary.prototype.setChar = function(char, encoding) {
 		return this.setString(char, encoding);
 	};
+	Binary.prototype.getByte = Binary.prototype.getUint8;
+	Binary.prototype.setByte = Binary.prototype.setUint8;
 
-	function instanceOf(object, name) {
+	function _instanceOf(object, name) {
 		var type = Object.prototype.toString.call(object);
 		if (type === '[object ' + name + ']') {
 			return true;
@@ -280,11 +281,12 @@
 		return false;
 	}
 
-
-	Binary.prototype.getByte = Binary.prototype.getUint8;
-	Binary.prototype.setByte = Binary.prototype.setUint8;
-	Binary.prototype.skipByte = Binary.prototype.skipInt8;
-
-	global.Binary = Binary;
+	if ( typeof define === 'function' && define.amd) {
+		define(function() {
+			return Binary;
+		});
+	} else {
+		global.Binary = Binary;
+	}
 
 })(this);
