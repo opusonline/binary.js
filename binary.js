@@ -270,6 +270,20 @@
 	Binary.prototype.setChar = function(char, encoding) {
 		return this.setString(char, encoding);
 	};
+	Binary.prototype.fill = function(value, length) {
+		if (length === undefined || length === null) {
+			length = this.length - this.position;
+		}
+		if ( typeof value !== 'number' && _instanceOf(value, 'String')) {
+			value = (value.charCodeAt(0) & 0xff);
+		}
+		var offset = this.position;
+		this.seek(offset + length);
+		for (var i = 0; i < length; i++) {
+			this.dataView.setUint8(offset + i, value);
+		}
+		return this;
+	};
 	Binary.prototype.getByte = Binary.prototype.getUint8;
 	Binary.prototype.setByte = Binary.prototype.setUint8;
 
