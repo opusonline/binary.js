@@ -1,7 +1,7 @@
 /*!
  * Binary Reader
  * author: Stefan Benicke <stefan.benicke@gmail.com>
- * version: 1.1
+ * version: 1.2
  * license: MIT
  */
 
@@ -19,7 +19,7 @@
 		} else if ( typeof array === 'number') {
 			this.dataView = new DataView(new ArrayBuffer(array));
 		} else {
-			throw new Error('Error! Invalid argument');
+			throw new Error('Invalid argument');
 		}
 		this.length = this.dataView.byteLength;
 		this.littleEndian = littleEndian || false;
@@ -37,7 +37,7 @@
 		return this;
 	};
 	Binary.prototype.getBlob = function(type) {
-		if (type === undefined || typeof type !== 'string') {
+		if (type === undefined || ! _instanceOf(type, 'String')) {
 			type = 'application/octet-binary';
 		}
 		return new Blob([this.dataView.buffer], {
@@ -170,7 +170,7 @@
 		if (offset < 0) {
 			this.position = 0;
 		} else if (offset > this.dataView.byteLength) {
-			throw new Error('Error! Offset behind length.');
+			throw new Error('Offset behind length');
 		} else {
 			this.position = offset;
 		}
@@ -238,7 +238,7 @@
 		} else if (_instanceOf(array, 'ArrayBuffer')) {
 			view = new Uint8Array(array);
 		} else {
-			throw new Error('Error! Invalid argument');
+			throw new Error('Invalid argument');
 		}
 		var offset = this.position;
 		this.seek(offset + view.length);
@@ -283,6 +283,27 @@
 			this.dataView.setUint8(offset + i, value);
 		}
 		return this;
+	};
+	Binary.prototype.copy = function(target, targetFrom, sourceFrom, length) {
+		if (!( target instanceof Binary)) {
+			throw new Error('Target has invalid type');
+		}
+		if (targetFrom === undefined || targetFrom === null) {
+			targetFrom = 0;
+		}
+		if (sourceFrom === undefined || sourceFrom === null) {
+			sourceFrom = 0;
+		}
+		var bytes = this.seek(sourceFrom).getBytes(length);
+		target.seek(targetFrom).setBytes(bytes);
+		return this;
+	};
+	Binary.prototype.toString = function(encoding, from, length) {
+		if (from === undefined) {
+			from = 0;
+		}
+		this.seek(from);
+		return this.getString(length, encoding);
 	};
 	Binary.prototype.getByte = Binary.prototype.getUint8;
 	Binary.prototype.setByte = Binary.prototype.setUint8;
