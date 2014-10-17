@@ -1,7 +1,7 @@
 /*!
  * Binary Reader
  * author: Stefan Benicke <stefan.benicke@gmail.com>
- * version: 1.2
+ * version: 1.0.2
  * license: MIT
  */
 
@@ -211,7 +211,6 @@
 		if (length === undefined || length === null) {
 			length = this.length - this.position;
 		}
-		var offset = this.position;
 		var bytes = this.getBytes(length);
 		encoding = encoding === 'utf8' ? 'utf-8' : (encoding || 'binary');
 		if (TextDecoder && encoding !== 'binary') {
