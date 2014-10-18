@@ -6,9 +6,13 @@
   ],
   "description": "Javascript Binary Reader to read and manipulate binary data.",
   "main": "binary.js",
+  "ignore": [
+    ""
+  ],
   "keywords": [
     "binary",
-    "javascript"
+    "javascript",
+    "opusonline"
   ],
   "repository": {
     "type": "git",

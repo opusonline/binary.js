@@ -2,6 +2,7 @@
  * Binary Reader
  * author: Stefan Benicke <stefan.benicke@gmail.com>
  * version: 1.0.2
+ * url: https://github.com/opusonline/binary.js
  * license: MIT
  */
 
