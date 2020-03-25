@@ -1,0 +1,17 @@
+{
+  "name": "opusonline-binary.js",
+  "version": "1.0.2",
+  "author": "Stefan Benicke <stefan.benicke@gmail.com>",
+  "description": "Javascript Binary Reader to read and manipulate binary data.",
+  "main": "binary.js",
+  "keywords": [
+    "binary",
+    "javascript",
+    "opusonline"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:opusonline/binary.js.git"
+  },
+  "license": "MIT"
+}
