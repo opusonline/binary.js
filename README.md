@@ -14,14 +14,14 @@ This library supports:
 
 # Install
 
-Install with [Bower](http://bower.io): `bower install opusonline-binary.js`
+Install with [yarn](https://yarnpkg.com/): `yarn add opusonline-binary.js`
 
 # Usage
 
 ### Example
 
 ```javascript
-var binary = new Binary(16);
+let binary = new Binary(16);
 binary.setString('hello world');
 binary.setByte(33);
 binary.skip();
@@ -36,7 +36,7 @@ binary.seek(0).getBytes(4);
 binary.skip(10).getUint16();
 // gives 14916
 
-var blob = binary.getBlob('text/plain');
+let blob = binary.getBlob('text/plain');
 // gives Blob {type: "text/plain", size: 16, …}
 ```
 
